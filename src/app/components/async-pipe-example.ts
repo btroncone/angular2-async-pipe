@@ -35,7 +35,7 @@ export class AsyncPipeExample {
         this.exampleObject$ = Observable
             .of({name: 'Joe', age: 40})
             .delay(3000);
-        //promise that resolves after 3s
+        //promise that resolves after 5s
         this.examplePromise = this.getData();
     }
 
