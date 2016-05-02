@@ -1,12 +1,11 @@
 import {Injectable} from 'angular2/core';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
-import 'rxjs/Rx';
 
 @Injectable()
-export class TotalService {
-    private numbers$ = new Subject();
-    public total$ : Observable<string>;
+export class BasicService {
+    private numbers$ : Subject<number> = new Subject<number>();
+    public total$ : Observable<number>;
 
     constructor(){
         this.total$ = this.numbers$
@@ -14,11 +13,11 @@ export class TotalService {
             .scan((acc, curr) => acc + curr)
     };
 
-    add(number){
+    add(number : number) : void {
         this.numbers$.next(number);
     }
 
-    makePromise(){
+    makePromise() : Promise<any> {
         return new Promise(resolve => {
             setTimeout(() => {
                 resolve('Promise resolved!');

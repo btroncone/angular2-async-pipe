@@ -11,7 +11,7 @@ import {DemoView} from './components/demo-view';
       		<h1 class="title">Angular 2 - AsyncPipe</h1>
 			<nav>
 				<a [routerLink]=" ['AsyncPipeExample'] ">Async Pipe Example</a>
-				<a [routerLink]=" ['AnotherView'] ">Demo View</a>
+				<a [routerLink]=" ['DemoView'] ">Demo View</a>
 			</nav>
     	</header>
 		<main>
