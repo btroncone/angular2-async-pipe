@@ -1,53 +1,64 @@
 import {Component} from 'angular2/core';
 import {Observable} from "rxjs/Observable";
-import {Subscription} from "rxjs/Subscription";
 
 @Component({
     selector: 'async-pipe-example',
     template: `
     <div>
-      <h5>
-        Counter:  {{counter$ | async}} 
-        <span *ngIf="even$ | async">(Even Number!)</span>
-      </h5>
-      <h5>
-        Object example: {{(exampleObject$ | async)?.name}}
-      </h5>
-      <h5>
-        Test Promise: {{examplePromise | async}}
-      </h5>
+        <h5>
+            Count: {{counter$ | async}}
+            <span *ngIf="even$ | async">(EVEN!)</span>            
+        </h5>
+        <h5>People:</h5>
+        <ul>
+            <li *ngFor="let person of people$ | async">
+                {{person.name}}
+            </li>
+        </ul>
+        <h5>
+            Person: {{(person$ | async)?.name}} 
+                    - {{(person$ | async)?.age}}
+        </h5>
+        <h5>
+            Data: {{data | async}}
+        </h5>
     </div>
   `
 })
 export class AsyncPipeExample {
-    public counter$ : Observable<number>;
-    public even$ : Observable<boolean>;
-    public exampleObject$ : Observable<Object>;
-    public examplePromise: Promise<any>;
-    //private subscription : Subscription;
+    counter$ : Observable<number>;
+    even$: Observable<boolean>;
+    people$: Observable<any>;
+    person$: Observable<any>;
+    data: any;
 
     constructor(){
-        //emit value every 1s
-        this.counter$ = Observable.interval(1000);
-        //is current count even?
-        this.even$ = this.counter$.map(val => val % 2 === 0);
-        //emit basic object for demo purposes
-        this.exampleObject$ = Observable
-            .of({name: 'Joe', age: 40})
+        this.counter$ = Observable
+            .interval(1000);
+
+        this.even$ = this.counter$
+            .map(number => number % 2 === 0);
+
+        this.people$ = Observable.of([
+                {name: 'Joe'},
+                {name: 'Bob'},
+                {name: 'Susy'}
+            ]);
+
+        this.person$ = Observable.of({
+                name: 'Sally',
+                age: 30
+            })
             .delay(3000);
-        //promise that resolves after 5s
-        this.examplePromise = this.getData();
+
+        this.data = this.getData();
     }
 
     getData(){
         return new Promise(resolve => {
             setTimeout(() => {
-                resolve('***DATA RECEIVED!***');
+                resolve('RECEIVED DATA!');
             }, 5000);
         })
     }
-    //unsubscribe in ngOnDestroy when not using AsyncPipe
-    // ngOnDestroy(){
-    //     this.subscription.unsubscribe();
-    // }
 }
